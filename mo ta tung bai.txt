@@ -1,0 +1,177 @@
+BÀI 1: ĐĂNG KÝ THÀNH VIÊN
+
+Mục tiêu
+
+Tạo tài khoản người dùng mới
+
+Hướng làm
+
+Stored Procedure sp_register_user
+
+Kiểm tra trùng username, email
+
+Dùng SIGNAL để báo lỗi
+
+Trigger AFTER INSERT trên Users
+
+Ghi log đăng ký vào bảng user_log
+
+Demo
+
+Đăng ký thành công → có log
+
+Đăng ký trùng → báo lỗi, không thêm dữ liệu
+
+BÀI 2: ĐĂNG BÀI VIẾT
+
+Mục tiêu
+
+Người dùng tạo bài viết mới
+
+Hướng làm
+
+Stored Procedure sp_create_post
+
+Kiểm tra nội dung không rỗng
+
+Trigger AFTER INSERT trên Posts
+
+Ghi log sự kiện đăng bài
+
+Demo
+
+Đăng nhiều bài → hiển thị đúng
+
+Nội dung rỗng → báo lỗi
+
+BÀI 3: THÍCH / BỎ THÍCH BÀI VIẾT
+
+Mục tiêu
+
+Quản lý lượt thích bài viết
+
+Hướng làm
+
+Bảng Likes (PRIMARY KEY user_id, post_id)
+
+Thêm cột like_count vào Posts
+
+Trigger:
+
+AFTER INSERT → tăng like_count
+
+AFTER DELETE → giảm like_count
+
+Demo
+
+Like → tăng count
+
+Unlike → giảm count
+
+Like trùng → bị chặn
+
+BÀI 4: GỬI LỜI MỜI KẾT BẠN
+
+Mục tiêu
+
+Gửi lời mời kết bạn hợp lệ
+
+Hướng làm
+
+Stored Procedure sp_send_friend_request
+
+Không tự gửi
+
+Không gửi trùng
+
+Trigger AFTER INSERT
+
+Ghi log lời mời kết bạn
+
+Demo
+
+Gửi hợp lệ → status = pending
+
+Gửi sai → báo lỗi
+
+BÀI 5: CHẤP NHẬN LỜI MỜI KẾT BẠN
+
+Mục tiêu
+
+Tạo mối quan hệ bạn bè hai chiều
+
+Hướng làm
+
+UPDATE Friends status → accepted
+
+Trigger AFTER UPDATE:
+
+Tự động tạo bản ghi ngược lại
+
+Demo
+
+Sau khi chấp nhận:
+
+Cả hai chiều đều là bạn bè
+BÀI 6: QUẢN LÝ MỐI QUAN HỆ BẠN BÈ
+
+Mục tiêu
+
+Cập nhật hoặc xóa quan hệ bạn bè
+
+Hướng làm
+
+Stored Procedure
+
+Sử dụng Transaction:
+
+START TRANSACTION
+
+COMMIT / ROLLBACK
+
+Demo
+
+Cập nhật/xóa thành công → dữ liệu nhất quán
+
+Gây lỗi → rollback toàn bộ
+
+BÀI 7: XÓA BÀI VIẾT
+
+Mục tiêu
+
+Xóa bài viết và dữ liệu liên quan
+
+Hướng làm
+
+Stored Procedure sp_delete_post
+
+Kiểm tra quyền chủ bài
+
+Transaction
+
+Trigger hoặc ON DELETE CASCADE
+
+Xóa likes, comments
+
+Demo
+
+Xóa bài → toàn bộ dữ liệu liên quan biến mất
+
+Lỗi → rollback
+BÀI 8: XÓA TÀI KHOẢN NGƯỜI DÙNG
+
+Mục tiêu
+
+Xóa user và tất cả dữ liệu liên quan
+
+Hướng làm
+
+Stored Procedure sp_delete_user
+
+Transaction
+
+ON DELETE CASCADE hoặc xóa theo thứ tự an toàn
+
+Demo
+
+Xóa user → posts, comments, likes, friends đều bị xóa
